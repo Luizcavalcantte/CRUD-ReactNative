@@ -1,16 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Alert, FlatList, View} from 'react-native';
 import {ListItem, Icon, Avatar, Text} from 'react-native-elements';
-
-import users from '../data/Users';
+import UserContext from '../context/UsersContext';
 
 export default props => {
+  const {state, dispatch} = useContext(UserContext);
+
   function confirmDeletion(user) {
     Alert.alert('Excluir Usuario', 'Deseja Excluir  ' + user.name + '?', [
       {
         text: 'Sim',
         onPress() {
-          console.warn('delete ' + user.name);
+          dispatch({type: 'deleteUser', payload: user});
         },
       },
       {text: 'Não'},
@@ -57,7 +58,7 @@ export default props => {
     <View>
       <FlatList
         keyExtractor={user => user.id.toString()}
-        data={users}
+        data={state.Users}
         renderItem={getUserItem}
       />
     </View>
